@@ -20,14 +20,38 @@ echo "<b>Feed URL:</b> <a href='".$path."' target='_blank'>".$path."</a><br><br>
 echo "<hr>";
 
 for($i = 0; $i < $maxResults; $i++) {
-	if(isset($feed->{'items'}[$i]->{'summary'})) {
+	if(isset($feed->{'items'}[$i])) {
 		//retrieve event information
-		$cal_summary = $feed->{'items'}[$i]->{'summary'};
-		$cal_location = $feed->{'items'}[$i]->{'location'};
-		$cal_creator_email = $feed->{'items'}[$i]->{'creator'}->{'email'};
-		$cal_creator_name = $feed->{'items'}[$i]->{'creator'}->{'displayName'};
-		$cal_start_time = $feed->{'items'}[$i]->{'start'}->{'dateTime'};
-		$cal_end_time = $feed->{'items'}[$i]->{'end'}->{'dateTime'};
+		if(isset($feed->{'items'}[$i]->{'summary'})) {
+			$cal_summary = $feed->{'items'}[$i]->{'summary'};	
+		} else {
+			$cal_summary = "Not defined!";
+		}	
+		if(isset($feed->{'items'}[$i]->{'location'})) {
+			$cal_location = $feed->{'items'}[$i]->{'location'};
+		} else {
+			$cal_location = "Not defined!";
+		}
+		if(isset($feed->{'items'}[$i]->{'creator'}->{'email'})) {
+			$cal_creator_email = $feed->{'items'}[$i]->{'creator'}->{'email'};
+		} else {
+			$cal_creator_email = "Not defined!";
+		}
+		if(isset($feed->{'items'}[$i]->{'creator'}->{'displayName'})) {
+			$cal_creator_name = $feed->{'items'}[$i]->{'creator'}->{'displayName'};
+		} else {
+			$cal_creator_name = "Not defined!";
+		}
+		if(isset($feed->{'items'}[$i]->{'start'}->{'dateTime'})) {
+			$cal_start_time = $feed->{'items'}[$i]->{'start'}->{'dateTime'};
+		} else {
+			$cal_start_time = "Not defined!";
+		}
+		if(isset($feed->{'items'}[$i]->{'end'}->{'dateTime'})) {
+			$cal_end_time = $feed->{'items'}[$i]->{'end'}->{'dateTime'};
+		} else {
+			$cal_end_time = "Not defined!";
+		}
 		//output the results
 		echo "<b>Event Title:</b> ".$cal_summary."<br>";
 		echo "<b>Created by:</b> ".$cal_creator_name."<br>";
@@ -35,11 +59,11 @@ for($i = 0; $i < $maxResults; $i++) {
 		echo "<b>Start Time:</b> ".substr($cal_start_time, 0, 10)." ".date("g:ia", strtotime(substr($cal_start_time, 11, 5)))."<br>"; //time format processing
 		echo "<b>End Time:</b> ".substr($cal_end_time, 0, 10)." ".date("g:ia", strtotime(substr($cal_end_time, 11, 5)))."<br>";
 		echo "<b>Location:</b> ".$cal_location."<br><br>";
-		echo "<hr>";
 	} else {
 		break; //if out of loop
 	}
 }
+echo "<hr>";
 
 $time_end = microtime(true); //for debugging purposes
 $time = $time_end - $time_start;
